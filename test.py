@@ -1,11 +1,8 @@
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
+import settings
 
-
-PROXY = {'proxy_url': 'socks5://t1.learn.python.ru:1080',
-         'urllib3_proxy_kwargs': {'username': 'learn', 'password': 'python'}}
-
-logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
             level=logging.INFO,
             filename='bot.log'
             )
@@ -31,10 +28,11 @@ def piska(bot, update):
     name = update.message.from_user.first_name
     text = ' писю соси'
     update.message.reply_text(name + text)
+    print(name_list)
 
     for i in name_list:
 
-        if name == i:
+        if (name + " ") == i:
             continue
         else:
             text1 = ' и ты писю соси'
@@ -47,10 +45,19 @@ def start(bot, update):
     name_list = handle.read()
     skl = open("text.txt", 'a')
     if name not in name_list:
-        skl.write(name)
+        skl.write('\n' + name + ' ')
+
 
 def clear(bot, update):
     f = open('text.txt', 'w')
+
+def message(bot, update):
+    user_message = update.message.text
+    print(user_message)
+    if user_message.lower() == 'петя лох?' or user_message.lower() == 'петя лох':
+        update.message.reply_text('Да')
+    else:
+        update.message.reply_text("Нет")
 
 
 
@@ -58,12 +65,13 @@ def clear(bot, update):
 
 
 def main():
-    mybot = Updater('632006628:AAG9wyctEzEAF25XbNUDPUaNJ87UYxlXris', request_kwargs = PROXY)
+    mybot = Updater(settings.API_KEY, request_kwargs = settings.PROXY)
 
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('piska', piska))
     dp.add_handler(CommandHandler('clear', clear))
+    dp.add_handler(MessageHandler(Filters.text, message))
 
 
 
