@@ -49,7 +49,8 @@ def start(bot, update):
 
 
 def clear(bot, update):
-    f = open('text.txt', 'w')
+    file = open('text.txt', 'w')
+    file.write('')
 
 def message(bot, update):
     user_message = update.message.text
