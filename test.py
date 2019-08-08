@@ -1,7 +1,6 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import settings
-import sys
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
             level=logging.INFO,
@@ -74,8 +73,6 @@ def main():
 
     mybot.start_polling()
     mybot.idle()
-
-print(sys.path)
 
 main()
 
