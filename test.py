@@ -1,6 +1,7 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging
 import settings
+import sys
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
             level=logging.INFO,
@@ -12,6 +13,7 @@ def piska(bot, update):
     names = handle.read()
     name_list = []
     name = ''
+
     for i in names:
         if i == '\n':
             name_list.append(name)
@@ -22,6 +24,7 @@ def piska(bot, update):
             name = ''
         elif i != '':
             name += i
+
     for i in name_list:
         if i == '':
             name_list.remove(i)
@@ -38,7 +41,6 @@ def piska(bot, update):
             text1 = ' и ты писю соси'
             update.message.reply_text(i + text1)
 
-
 def start(bot, update):
     name = update.message.from_user.first_name
     handle = open("text.txt", 'r')
@@ -47,7 +49,6 @@ def start(bot, update):
     if name not in name_list:
         skl.write('\n' + name + ' ')
 
-
 def clear(bot, update):
     file = open('text.txt', 'w')
     file.write('')
@@ -55,15 +56,12 @@ def clear(bot, update):
 def message(bot, update):
     user_message = update.message.text
     print(user_message)
-    if user_message.lower() == 'петя лох?' or user_message.lower() == 'петя лох':
+
+    if (user_message.lower() == 'петя лох?') or \
+            (user_message.lower() == 'петя лох'):
         update.message.reply_text('Да')
     else:
         update.message.reply_text("Нет")
-
-
-
-
-
 
 def main():
     mybot = Updater(settings.API_KEY, request_kwargs = settings.PROXY)
@@ -74,9 +72,10 @@ def main():
     dp.add_handler(CommandHandler('clear', clear))
     dp.add_handler(MessageHandler(Filters.text, message))
 
-
-
     mybot.start_polling()
     mybot.idle()
 
+print(sys.path)
+
 main()
+

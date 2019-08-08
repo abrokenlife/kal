@@ -4,3 +4,4 @@ text.txt
 __pycache__
 .vscode/settings.json
 .vscode
+env
